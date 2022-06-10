@@ -3,27 +3,27 @@ version: 2.1
 jobs:
   build-frontend:
     docker:
-      - image: cimg/base:stable
+      - image: cimg/node:18.3.0
     steps:
       - checkout
       - run:
           name: Build front-end
           command: |
-            cd frontend
-            npm install
-            npm run build
+              cd frontend
+              sudo apt-get install npm
+              npm run build
 
   build-backend:
     docker:
-      - image: cimg/base:stable
+      - image: cimg/node:18.3.0
     steps:
       - checkout
       - run:
           name: Back-end build
           command: |
-            cd backend
-            npm install
-            npm run build
+              cd backend
+              sudo apt-get install npm
+              npm run build
              
 
 workflows:
