@@ -6,7 +6,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run:
+      - run: 
           name: Build front-end
           command: |
             cd frontend
@@ -18,7 +18,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run:
+      - run: 
           name: Back-end build
           command: |
             cd backend
