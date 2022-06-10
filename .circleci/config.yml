@@ -3,29 +3,28 @@ version: 2.1
 jobs:
   build-frontend:
     docker:
-      - image: cimg/node:18.3.0
+      - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run:
+      - run: 
           name: Build front-end
           command: |
               cd frontend
-              sudo apt-get install npm
+              npm install
               npm run build
 
   build-backend:
     docker:
-      - image: cimg/node:18.3.0
+      - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run:
+      - run: 
           name: Back-end build
           command: |
               cd backend
-              sudo apt-get install npm
+              npm install
               npm run build
-             
-
+              
 workflows:
   default:
     jobs:
