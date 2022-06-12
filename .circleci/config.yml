@@ -96,8 +96,6 @@ jobs:
           command: |
             cd backend
             npm install
-            npm audit fix
-            npm audit --audit-level=critical
 
 workflows:
   default:
