@@ -166,7 +166,7 @@ jobs:
       # Checkout code from git
       - checkout
       # Add ssh keys with fingerprint
-      - add_ssh_keys
+      - add_ssh_keys:
           fingerprints: ["c2:ae:ed:90:b2:27:69:62:22:f2:36:71:c2:bd:e1:91"]
       # attach workspace
       - run: yum -y install tar gzip awscli
