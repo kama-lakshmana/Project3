@@ -150,9 +150,9 @@ jobs:
             --query 'Reservations[*].Instance[*].PublicIpAddress' \
             --output text >> .circleci/ansible/inventory.txt
       - persist_to_workspace:
-          root: ~/nd9991-c2-IaaC-v1/Project3
+          root: ~/
           paths:
-            - .circleci/ansible/inventory.txt
+            - project/.circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
@@ -170,7 +170,7 @@ jobs:
           fingerprints: ["c2:ae:ed:90:b2:27:69:62:22:f2:36:71:c2:bd:e1:91"]
       # attach workspace
       - attach_workspace:
-          at: ~/nd9991-c2-IaaC-v1/Project3
+          at: ~/
       - run: yum -y install tar gzip awscli
       - run:
           name: Install dependencies
@@ -180,7 +180,7 @@ jobs:
           name: Configure server
           command: |
             # Your code here
-            cd ~/Project3/.circleci/ansible
+            cd ~/project/.circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
       # Here's where you will add some code to rollback on failure
 
