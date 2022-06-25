@@ -255,6 +255,43 @@ jobs:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
           event: on_fail
 
+  deploy-backend:
+    docker:
+      # Docker image here that supports Ansible
+      - image: python:3.7-alpine3.11
+    steps:
+      # Checkout code from git
+      - checkout
+      # Add ssh keys with fingerprint
+      - add_ssh_keys:
+          fingerprints: ["c2:ae:ed:90:b2:27:69:62:22:f2:36:71:c2:bd:e1:91"]
+      # attach workspace
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install dependencies
+          command: |
+            # your code here
+            apk add --update ansible
+            apk add --update tar gzip nodejs npm
+
+      - run:
+          name: Deploy backend
+          command: |
+            # your code here
+            cd backend
+            npm i
+            npm run build
+            cd ..
+            # Zip the directory
+            tar -C backend -czvf artifact.tar.gz .
+            cd .circleci/ansible
+            echo "Contents  of the inventory.txt file is -------"
+            cat inventory.txt
+            ansible-playbook -i inventory.txt deploy-backend.yml
+      # Here's where you will add some code to rollback on failure 
+
+
 workflows:
   default:
     jobs:
@@ -274,7 +311,7 @@ workflows:
       #    requires: [deploy-infrastructure]
       # - run-migrations:
       #    requires: [configure-infrastructure]
-      - deploy-frontend
+      #- deploy-frontend
       #    requires: [run-migrations]
-      #- deploy-backend
+      - deploy-backend
       #    requires: [run-migrations]    
