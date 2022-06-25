@@ -16,7 +16,7 @@ commands:
           command: |
             # Your code here
             echo "Destroying environments: << parameters.workflow_id >>"
-            #aws s3 rm s3://
+            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
             aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.workflow_id >>
             aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.workflow_id >>
 
@@ -152,7 +152,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - .circleci/ansible/inventory.txt
+            - Project3/.circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
@@ -169,6 +169,8 @@ jobs:
       - add_ssh_keys:
           fingerprints: ["c2:ae:ed:90:b2:27:69:62:22:f2:36:71:c2:bd:e1:91"]
       # attach workspace
+      - attach_workspace:
+          at: ~/
       - run: yum -y install tar gzip awscli
       - run:
           name: Install dependencies
@@ -178,8 +180,13 @@ jobs:
           name: Configure server
           command: |
             # Your code here
+            cd ~/Project3/.circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
-      # Here's where you will add some code to rollback on failure   
+      # Here's where you will add some code to rollback on failure
+
+      - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+          event: on_fail   
 
 workflows:
   default:
