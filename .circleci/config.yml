@@ -211,7 +211,8 @@ jobs:
   deploy-frontend:
     docker:
       # Docker image here that supports AWS CLI
-      - image: amazon/aws-cli
+      #- image: amazon/aws-cli
+      - image: circleci/node:13.8.0
     steps:
       # Checkout code from git
       - checkout
@@ -221,8 +222,12 @@ jobs:
           command: |
             # your code here
             # Python, Ansible, Node, NPM, and AWS CLI
-            yum -y install tar gzip python3 ansible awscli curl npm
+            # yum -y install tar gzip python3 awscli curl npm
+            # python3 -m pip install --user ansible
+            apt-get update && apt-get install -y python3-pip tar gzip curl 
+            pip3 install awscli 
             python3 -m pip install --user ansible
+            npm install
 
       - run:
           name: Get backend url
