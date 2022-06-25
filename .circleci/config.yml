@@ -221,11 +221,8 @@ jobs:
           command: |
             # your code here
             # Python, Ansible, Node, NPM, and AWS CLI
-            # apt-get update && apt-get install -y python3-pip curl
-            # pip3 install ansible
-            # pip3 install awscli
-            yum -y install tar gzip python3 ansible awscli curl
-            npm install
+            yum -y install tar gzip python3 ansible awscli curl npm
+            python3 -m pip install --user ansible
 
       - run:
           name: Get backend url
