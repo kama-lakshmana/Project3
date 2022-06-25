@@ -224,7 +224,7 @@ jobs:
             # Python, Ansible, Node, NPM, and AWS CLI
             # yum -y install tar gzip python3 awscli curl npm
             # python3 -m pip install --user ansible
-            apt-get update && apt-get install -y python3-pip tar gzip curl 
+            sudo apt-get update && apt-get install -y python3-pip tar gzip curl 
             pip3 install awscli 
             python3 -m pip install --user ansible
             npm install
