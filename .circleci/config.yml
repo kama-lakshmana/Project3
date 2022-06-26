@@ -166,8 +166,8 @@ jobs:
           command: |
             # Your code here
             aws ec2 describe-instances \
-            --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
             --query 'Reservations[*].Instance[*].PublicIpAddress' \
+            --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
             --output text >> .circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: ~/
@@ -341,13 +341,16 @@ jobs:
           name: Get backend url
           command: |
             # your code here
-            export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instance[*].PublicIpAddress' --filters Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text)
+            # export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instance[*].PublicIpAddress' --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text)
+            export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instance[*].PublicIpAddress' --filters "Name=tag:Name,Values=backend-a361480" --output text)
       - run:
           name: Backend smoke test.
           command: |
             # your code here
             # Fetch and prepare the BACKEND_IP env var
-            export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instance[*].PublicIpAddress' --filters Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text)
+            # export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instance[*].PublicIpAddress' --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text)
+            export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instance[*].PublicIpAddress' --filters "Name=tag:Name,Values=backend-a361480" --output text)
+            echo "BACKEND_IP=${BACKEND_IP}"
             export API_URL="http://${BACKEND_IP}:3030"
             echo "API_URL=${API_URL}"
             if curl "${API_URL}/api/status" | grep "ok"
@@ -395,8 +398,8 @@ workflows:
       #    requires: [run-migrations]
       # - deploy-backend:
       #    requires: [run-migrations]
-        - smoke-test
-      #     requires: [deploy-backend, deploy-frontend]
+       - smoke-test
+      #    requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:
       #     requires: [smoke-test]
       # - cleanup:
