@@ -334,7 +334,8 @@ jobs:
             # your code here
             apk add --update nodejs npm curl
             apk add --update --no-cache python3 py3-pip
-            pip install aws-cli
+            /usr/local/bin/python -m pip install --upgrade pip
+            pip install awscli
             aws --version
       - run:
           name: Get backend url
