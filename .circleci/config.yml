@@ -341,15 +341,15 @@ jobs:
           name: Get backend url
           command: |
             # your code here
-            # export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instance[*].PublicIpAddress' --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text)
-            export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instance[*].PublicIpAddress' --filters Name=tag:Name,Values=backend-a361480 --output text)
+            export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instance[*].PublicIpAddress' --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text)
+            # export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instance[*].PublicIpAddress' --filters Name=tag:Name,Values=backend-a361480 --output text)
       - run:
           name: Backend smoke test.
           command: |
             # your code here
             # Fetch and prepare the BACKEND_IP env var
-            # export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instance[*].PublicIpAddress' --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text)
-            export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instance[*].PublicIpAddress' --filters Name=tag:Name,Values=backend-a361480 --output text)
+            export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instance[*].PublicIpAddress' --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text)
+            # export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instance[*].PublicIpAddress' --filters Name=tag:Name,Values=backend-a361480 --output text)
             echo "BACKEND_IP=${BACKEND_IP}"
             export API_URL="http://${BACKEND_IP}:3030"
             echo "API_URL=${API_URL}"
@@ -378,28 +378,28 @@ jobs:
 workflows:
   default:
     jobs:
-      # - build-frontend
-      # - build-backend
-      # - test-frontend:
-      #     requires: [build-frontend]
-      # - test-backend:
-      #     requires: [build-backend]
-      # - scan-frontend:
-      #     requires: [build-frontend]
-      # - scan-backend:
-      #     requires: [build-backend]
-      # - deploy-infrastructure:
-      #    requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-      # - configure-infrastructure:
-      #    requires: [deploy-infrastructure]
-      # - run-migrations:
-      #    requires: [configure-infrastructure]
-      # - deploy-frontend:
-      #    requires: [run-migrations]
-      # - deploy-backend:
-      #    requires: [run-migrations]
-       - smoke-test
-      #    requires: [deploy-backend, deploy-frontend]
+      - build-frontend
+      - build-backend
+      - test-frontend:
+          requires: [build-frontend]
+      - test-backend:
+          requires: [build-backend]
+      - scan-frontend:
+          requires: [build-frontend]
+      - scan-backend:
+          requires: [build-backend]
+      - deploy-infrastructure:
+         requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+      - configure-infrastructure:
+         requires: [deploy-infrastructure]
+      - run-migrations:
+         requires: [configure-infrastructure]
+      - deploy-frontend:
+         requires: [run-migrations]
+      - deploy-backend:
+         requires: [run-migrations]
+      - smoke-test:
+         requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:
       #     requires: [smoke-test]
       # - cleanup:
