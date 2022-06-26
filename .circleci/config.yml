@@ -333,7 +333,7 @@ jobs:
           command: |
             # your code here
             apk add --update nodejs npm curl
-            apk add python python-pip
+            apk add --update --no-cache python3 py3-pip
             pip install aws-cli
             aws --version
       - run:
