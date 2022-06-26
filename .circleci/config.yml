@@ -333,7 +333,9 @@ jobs:
           command: |
             # your code here
             apk add --update nodejs npm curl
-            apk add aws-cli
+            apk add python python-pip
+            pip install aws-cli
+            aws --version
       - run:
           name: Get backend url
           command: |
