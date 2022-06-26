@@ -332,7 +332,7 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
-            apk add --update nodejs npm curl awscli
+            apk add --update nodejs npm curl
       - run:
           name: Get backend url
           command: |
