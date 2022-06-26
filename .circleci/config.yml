@@ -325,7 +325,7 @@ jobs:
     docker:
       # Lightweight Docker image
       #- image: python:3.7-alpine3.11 
-      - image: alipne:3.15
+      - image: alipne:3.7
     steps:
       # Checkout code from git
       - checkout
