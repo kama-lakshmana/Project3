@@ -26,6 +26,8 @@ commands:
       # Add parameter here
       workflow_id:
         type: string
+      event:
+        type: string
     steps:
       - run:
           name: Revert migrations
@@ -398,7 +400,6 @@ jobs:
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
           event: on_fail
-
       - revert-migrations:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
           event: on_fail
