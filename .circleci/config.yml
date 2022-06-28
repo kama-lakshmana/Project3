@@ -465,18 +465,6 @@ jobs:
               aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
               aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"  
             fi
-      # - run:
-      #     name: Remove old stacks and files
-      #     command: |
-      #       echo OldWorkflowID: "${OldWorkflowID} - inside Remove old stacks run"
-      #       if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
-      #       then
-      #         # your code here
-      #         echo "Inside If condition"
-      #         aws s3 rm "s3://udapeople${OldWorkflowID}" --recursive
-      #         aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
-      #         aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"  
-      #       fi
 
 workflows:
   default:
@@ -493,9 +481,9 @@ workflows:
           requires: [build-backend]
       - deploy-infrastructure:
           requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-          filters:
-            branches:
-              only: [test-feature-branch]
+          # filters:
+          #   branches:
+          #     only: [test-feature-branch]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
       - run-migrations:
@@ -504,9 +492,9 @@ workflows:
           requires: [run-migrations]
       - deploy-backend:
           requires: [run-migrations]
-      - smoke-test:
-          requires: [deploy-backend, deploy-frontend]
-      - cloudfront-update:
-          requires: [smoke-test]
-      - cleanup:
-          requires: [cloudfront-update]    
+      # - smoke-test:
+      #     requires: [deploy-backend, deploy-frontend]
+      # - cloudfront-update:
+      #     requires: [smoke-test]
+      # - cleanup:
+      #     requires: [cloudfront-update]    
