@@ -277,10 +277,10 @@ jobs:
           name: Get backend url
           command: |
             # your code here
-            export BACKEND_DNS=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicDnsName' --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text)
-            export API_URL="http://${BACKEND_DNS}:3030"
+            export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text)
+            export API_URL="http://${BACKEND_IP}:3030"
             echo "API_URL = ${API_URL}"
-            echo API_URL="http://${BACKEND_DNS}:3030" >> frontend/.env
+            echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
             cat frontend/.env
       - run:
           name: Deploy frontend objects
@@ -323,6 +323,8 @@ jobs:
           command: |
             # your code here
             cd backend
+            echo ENVIROMENT=production > ".env"
+            echo NODE_ENV=production >> ".env"
             echo TYPEORM_CONNECTION=postgres >> ".env"
             echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> ".env"
             echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts >> ".env"
@@ -367,15 +369,15 @@ jobs:
           name: Get backend url
           command: |
             # your code here
-            export BACKEND_DNS=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicDnsName' --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text)
+            export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text)
       - run:
           name: Backend smoke test.
           command: |
             # your code here
-            # Fetch and prepare the BACKEND_DNS env var
-            export BACKEND_DNS=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicDnsName' --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text)
-            echo "BACKEND_DNS=${BACKEND_DNS}"
-            export API_URL="http://${BACKEND_DNS}:3030"
+            # Fetch and prepare the BACKEND_IP env var
+            export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text)
+            echo "BACKEND_IP=${BACKEND_IP}"
+            export API_URL="http://${BACKEND_IP}:3030"
             echo "API_URL=${API_URL}"
             if curl "${API_URL}/api/status" | grep "ok"
             then

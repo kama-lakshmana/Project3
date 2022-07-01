@@ -24,6 +24,7 @@ Resources:
             Id: webpage
             #S3OriginConfig:
             CustomOriginConfig:
+              HTTPPort: 80
               OriginProtocolPolicy: http-only
               #OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}"
         Enabled: True
